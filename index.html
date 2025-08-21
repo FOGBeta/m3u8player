@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U8在线播放器</title>
+    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #2c3e50, #4ca1af);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .player-container {
+            padding: 20px;
+        }
+        
+        #my-video {
+            width: 100%;
+            max-height: 500px;
+            background-color: #000;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .url-input {
+            display: flex;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        #m3u8-url {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        #m3u8-url:focus {
+            border-color: #4ca1af;
+            outline: none;
+        }
+        
+        #play-btn {
+            padding: 12px 25px;
+            background: linear-gradient(90deg, #2c3e50, #4ca1af);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        
+        #play-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+        
+        #play-btn:active {
+            transform: translateY(0);
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #4ca1af;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        @media (max-width: 768px) {
+            .url-input {
+                flex-direction: column;
+            }
+            
+            #play-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>M3U8在线播放器</h1>
+            <p class="description">简单易用的HLS流媒体播放工具</p>
+        </header>
+        
+        <div class="player-container">
+            <video id="my-video" class="video-js vjs-default-skin" controls preload="auto">
+                <p class="vjs-no-js">
+                    您的浏览器不支持HTML5视频播放，请使用现代浏览器如Chrome、Firefox或Edge。
+                </p>
+            </video>
+            
+            <div class="url-input">
+                <input type="text" id="m3u8-url" placeholder="在此输入M3U8视频链接...">
+                <button id="play-btn">播放</button>
+            </div>
+            
+            <div class="instructions">
+                <h3>使用说明</h3>
+                <ul>
+                    <li>在输入框中粘贴M3U8视频流链接</li>
+                    <li>点击"播放"按钮开始播放视频</li>
+                    <li>使用播放器控制栏调整音量、进度和画质</li>
+                    <li>支持全屏播放 - 点击播放器右下角的全屏按钮</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 M3U8在线播放器 | 基于Video.js开发</p>
+        </footer>
+    </div>
+
+    <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化播放器
+            const player = videojs('my-video', {
+                fluid: true,
+                responsive: true,
+                playbackRates: [0.5, 1, 1.5, 2]
+            });
+            
+            // 播放按钮点击事件
+            document.getElementById('play-btn').addEventListener('click', function() {
+                const url = document.getElementById('m3u8-url').value.trim();
+                
+                if (url) {
+                    try {
+                        player.src({
+                            src: url,
+                            type: 'application/x-mpegURL'
+                        });
+                        player.play();
+                    } catch (error) {
+                        alert('播放错误: ' + error.message);
+                        console.error('播放错误:', error);
+                    }
+                } else {
+                    alert('请输入M3U8视频链接');
+                }
+            });
+            
+            // 示例M3U8链接（仅供测试）
+            document.getElementById('m3u8-url').value = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+            
+            // 按Enter键也可以触发播放
+            document.getElementById('m3u8-url').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('play-btn').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
