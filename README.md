@@ -142,7 +142,7 @@ Fork 本项目
 开启一个Pull Request
 
 ## 📄 许可证
-本项目基于 MIT 许可证开源 - 查看 LICENSE 文件了解详情
+本项目基于 MIT 许可证开源 - 查看 [LICENSE](https://github.com/FOGBeta/m3u8player/blob/main/LICENSE) 文件了解详情
 
 ## 🙏 致谢
 [hls.js](https://github.com/video-dev/hls.js) - 优秀的HLS客户端库
