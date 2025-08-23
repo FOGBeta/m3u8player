@@ -1,5 +1,5 @@
 # M3U8播放器 - 专业的HLS流媒体在线播放工具
-![MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![MIT](https://github.com/FOGBeta/m3u8player/blob/main/LICENSE)
 ![issues](https://img.shields.io/github/issues/FOGBeta/m3u8player)
 ![stars](https://img.shields.io/github/stars/FOGBeta/m3u8player)
 
