@@ -1,11 +1,6 @@
 # M3U8播放器 - 专业的HLS流媒体在线播放工具
-![MIT](https://github.com/FOGBeta/m3u8player/blob/main/LICENSE)
-![issues](https://img.shields.io/github/issues/FOGBeta/m3u8player)
-![stars](https://img.shields.io/github/stars/FOGBeta/m3u8player)
 
-
-
-一个基于hls.js开发的现代Web端M3U8播放器，支持HLS流媒体播放，具有多语言界面和优雅的用户体验。
+一个基于[hls.js](https://github.com/video-dev/hls.js)开发的现代Web端M3U8播放器，支持HLS流媒体播放，具有多语言界面和优雅的用户体验。
 
 ## ✨ 功能特点
 🎥 **专业播放能力** - 基于hls.js库，支持M3U8/HLS流媒体格式
