@@ -123,18 +123,6 @@ CORS限制：服务器未设置正确的跨域资源共享策略
 
 横屏观看可获得更大播放区域
 
-## 🤝 贡献指南
-我们欢迎任何形式的贡献！请遵循以下步骤：
-
-Fork 本项目
-
-创建您的特性分支 (```git checkout -b feature/AmazingFeature```)
-
-提交您的更改 (```git commit -m 'Add some AmazingFeature'```)
-
-推送到分支 (```git push origin feature/AmazingFeature```)
-
-开启一个Pull Request
 
 ## 📄 许可证
 本项目基于 MIT 许可证开源 - 查看 [LICENSE](https://github.com/FOGBeta/m3u8player/blob/main/LICENSE) 文件了解详情
