@@ -1,124 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3U8播放器 - 专业HLS流媒体播放工具</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- 添加样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 添加多语言支持 -->
+    <script src="js/i18n.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #3f4c8c, #6c77a0);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0;
-        }
-        
-        /* 导航栏样式 */
-        .navbar {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .logo {
-            font-size: 22px;
-            font-weight: 700;
-            color: #fdbb2d;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 24px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 8px 15px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            color: #fff;
-            background: rgba(253, 187, 45, 0.2);
-        }
-        
-        .nav-link.active {
-            background: rgba(253, 187, 45, 0.3);
-        }
-        
-        .language-selector {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 15px;
-        }
-        
-        /* 主容器样式 */
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-            padding: 30px;
-            margin: 30px 20px;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #fdbb2d, #ffea00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .description {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
+        /* 主页面特定样式 */
         .input-group {
             display: flex;
             margin: 25px 0;
@@ -126,7 +19,7 @@
             border-radius: 10px;
             overflow: hidden;
         }
-        
+
         #stream-url {
             flex: 1;
             padding: 16px 20px;
@@ -136,11 +29,11 @@
             font-size: 16px;
             outline: none;
         }
-        
+
         #stream-url::placeholder {
             color: rgba(255, 255, 255, 0.5);
         }
-        
+
         #load-btn {
             padding: 16px 25px;
             background: linear-gradient(to right, #fdbb2d, #ffa500);
@@ -150,22 +43,23 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         #load-btn:hover {
             background: linear-gradient(to right, #ffa500, #fdbb2d);
         }
-        
+
         .player-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
             background: #000;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
-        
+
         #video {
             position: absolute;
             top: 0;
@@ -174,7 +68,72 @@
             height: 100%;
             outline: none;
         }
-        
+
+        /* 清晰度选择器 */
+        .quality-selector {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .quality-selector span {
+            margin-right: 10px;
+            font-weight: 500;
+            color: #fdbb2d;
+        }
+
+        .quality-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .quality-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quality-btn:hover {
+            background: rgba(253, 187, 45, 0.2);
+            color: #fff;
+        }
+
+        .quality-btn.active {
+            background: rgba(253, 187, 45, 0.3);
+            color: #fff;
+            border-color: #fdbb2d;
+        }
+
+        /* 视频信息显示 - 修复布局 */
+        .video-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-item span:first-child {
+            font-weight: 500;
+            color: #fdbb2d;
+        }
+
         .status {
             padding: 15px;
             text-align: center;
@@ -184,62 +143,31 @@
             color: #fdbb2d;
             margin-top: 20px;
         }
-        
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            max-width: 900px;
-            line-height: 1.6;
-            padding: 20px;
-        }
-        
-        .footer a {
-            color: #fdbb2d;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
+
         @media (max-width: 768px) {
-            .navbar {
-                padding: 12px 5%;
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .container {
-                padding: 20px;
-                margin: 20px 15px;
-            }
-            
-            h1 {
-                font-size: 26px;
-            }
-            
             .input-group {
                 flex-direction: column;
             }
-            
+
             #stream-url {
                 border-radius: 10px 10px 0 0;
             }
-            
+
             #load-btn {
                 border-radius: 0 0 10px 10px;
+            }
+
+            .video-info {
+                grid-template-columns: 1fr;
+            }
+
+            .quality-buttons {
+                justify-content: center;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- 导航栏 -->
     <nav class="navbar">
@@ -256,125 +184,142 @@
             </select>
         </div>
     </nav>
-    
+
     <!-- 主内容区 -->
     <div class="container">
         <div class="header">
             <h1 data-i18n="app-name">M3U8播放器</h1>
             <p class="description" data-i18n="app-description">专业的HLS流媒体在线播放工具</p>
         </div>
-        
+
         <div class="input-group">
             <input type="text" id="stream-url" data-i18n-placeholder="stream-placeholder" placeholder="请输入M3U8流媒体地址...">
             <button id="load-btn" data-i18n="load-video">加载视频</button>
         </div>
-        
+
         <div class="player-container">
             <video id="video" controls></video>
         </div>
-        
+
+        <!-- 清晰度选择器 -->
+        <div class="quality-selector" id="quality-selector" style="display: none;">
+            <span data-i18n="quality">清晰度:</span>
+            <div class="quality-buttons" id="quality-buttons"></div>
+        </div>
+
+        <!-- 视频信息显示 - 修复后的布局 -->
+        <div class="video-info" id="video-info">
+            <div class="info-item">
+                <span data-i18n="resolution">分辨率:</span>
+                <span id="resolution">-</span>
+            </div>
+            <div class="info-item">
+                <span data-i18n="bitrate">码率:</span>
+                <span id="bitrate">-</span>
+            </div>
+            <div class="info-item">
+                <span data-i18n="buffer-length">缓冲长度:</span>
+                <span id="buffer-length">-</span>
+            </div>
+            <div class="info-item">
+                <span data-i18n="current-level">当前等级:</span>
+                <span id="current-level">-</span>
+            </div>
+        </div>
+
         <div class="status" id="status" data-i18n="waiting-stream">
             等待加载视频流...
         </div>
     </div>
-    
+
     <div class="footer">
         <p data-i18n="footer-line1">基于hls.js实现的M3U8播放器 | 仅供学习使用</p>
         <p data-i18n="footer-line2">hls.js是基于Apache License 2.0的开源项目，您可以在遵守许可证条款的前提下使用</p>
     </div>
 
     <script>
-        // 多语言资源
-        const resources = {
-            'zh-CN': {
-                'app-name': 'M3U8播放器',
-                'app-description': '专业的HLS流媒体在线播放工具',
-                'home': '主页',
-                'help-center': '帮助中心',
-                'stream-placeholder': '请输入M3U8流媒体地址...',
-                'load-video': '加载视频',
-                'waiting-stream': '等待加载视频流...',
-                'loading-stream': '正在加载视频流...',
-                'stream-success': '视频流加载成功！',
-                'network-error': '网络错误: ',
-                'media-error': '媒体错误: ',
-                'fatal-error': '不可恢复的错误',
-                'unsupported-browser': '您的浏览器不支持HLS播放',
-                'footer-line1': '基于hls.js实现的M3U8播放器 | 仅供学习使用',
-                'footer-line2': 'hls.js是基于Apache License 2.0的开源项目，您可以在遵守许可证条款的前提下使用'
-            },
-            'en': {
-                'app-name': 'M3U8 Player',
-                'app-description': 'Professional HLS Streaming Player',
-                'home': 'Home',
-                'help-center': 'Help Center',
-                'stream-placeholder': 'Please enter M3U8 stream URL...',
-                'load-video': 'Load Video',
-                'waiting-stream': 'Waiting for video stream...',
-                'loading-stream': 'Loading video stream...',
-                'stream-success': 'Video stream loaded successfully!',
-                'network-error': 'Network error: ',
-                'media-error': 'Media error: ',
-                'fatal-error': 'Unrecoverable error',
-                'unsupported-browser': 'Your browser does not support HLS playback',
-                'footer-line1': 'M3U8 Player based on hls.js | For learning purposes only',
-                'footer-line2': 'hls.js is open source under Apache License 2.0, you can use it in compliance with the license terms'
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const video = document.getElementById('video');
             const streamUrlInput = document.getElementById('stream-url');
             const loadBtn = document.getElementById('load-btn');
             const status = document.getElementById('status');
+            const qualitySelector = document.getElementById('quality-selector');
+            const qualityButtons = document.getElementById('quality-buttons');
             const languageSelector = document.getElementById('language-selector');
-            
-            let hls = new Hls();
-            let currentLanguage = localStorage.getItem('language') || 'zh-CN';
-            
-            // 设置当前语言
-            languageSelector.value = currentLanguage;
-            
-            // 初始化多语言
-            updatePageLanguage();
-            
+
+            // 视频信息元素
+            const resolutionEl = document.getElementById('resolution');
+            const bitrateEl = document.getElementById('bitrate');
+            const bufferLengthEl = document.getElementById('buffer-length');
+            const currentLevelEl = document.getElementById('current-level');
+
+            let hls = new Hls({
+                debug: false,
+                enableWorker: true,
+                lowLatencyMode: true,
+                backBufferLength: 90
+            });
+
+            let levels = [];
+            let currentLevel = -1;
+            let updateInterval;
+
             // 加载视频流
             function loadStream(url) {
                 if (!url) {
                     status.textContent = getTranslation('stream-placeholder');
                     return;
                 }
-                
+
+                // 清除之前的更新间隔
+                if (updateInterval) clearInterval(updateInterval);
+
                 status.textContent = getTranslation('loading-stream');
-                
+
                 if (Hls.isSupported()) {
-                    hls.loadSource(url);
-                    hls.attachMedia(video);
-                    
-                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                        status.textContent = getTranslation('stream-success');
-                        video.play();
-                    });
-                    
-                    hls.on(Hls.Events.ERROR, function(event, data) {
-                        if (data.fatal) {
-                            switch(data.type) {
-                                case Hls.ErrorTypes.NETWORK_ERROR:
-                                    status.textContent = getTranslation('network-error') + data.details;
-                                    break;
-                                case Hls.ErrorTypes.MEDIA_ERROR:
-                                    status.textContent = getTranslation('media-error') + data.details;
-                                    break;
-                                default:
-                                    status.textContent = getTranslation('fatal-error');
-                                    break;
+                    try {
+                        hls.loadSource(url);
+                        hls.attachMedia(video);
+
+                        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                            status.textContent = getTranslation('stream-success');
+                            levels = data.levels;
+
+                            // 创建清晰度选择按钮
+                            createQualityButtons();
+
+                            // 开始更新视频信息
+                            updateVideoInfo();
+                            updateInterval = setInterval(updateVideoInfo, 1000);
+                        });
+
+                        hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+                            currentLevel = data.level;
+                            updateVideoInfo();
+                        });
+
+                        hls.on(Hls.Events.ERROR, function (event, data) {
+                            if (data.fatal) {
+                                switch (data.type) {
+                                    case Hls.ErrorTypes.NETWORK_ERROR:
+                                        status.textContent = getTranslation('network-error') + data.details;
+                                        break;
+                                    case Hls.ErrorTypes.MEDIA_ERROR:
+                                        status.textContent = getTranslation('media-error') + data.details;
+                                        break;
+                                    default:
+                                        status.textContent = getTranslation('fatal-error');
+                                        break;
+                                }
                             }
-                        }
-                    });
+                        });
+                    } catch (e) {
+                        status.textContent = getTranslation('fatal-error') + ': ' + e.message;
+                    }
                 } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                     // 对于Safari浏览器
                     video.src = url;
-                    video.addEventListener('loadedmetadata', function() {
+                    video.addEventListener('loadedmetadata', function () {
                         video.play();
                         status.textContent = getTranslation('stream-success');
                     });
@@ -382,44 +327,96 @@
                     status.textContent = getTranslation('unsupported-browser');
                 }
             }
-            
-            // 获取翻译文本
-            function getTranslation(key) {
-                return resources[currentLanguage][key] || key;
+
+            // 创建清晰度选择按钮
+            function createQualityButtons() {
+                qualityButtons.innerHTML = '';
+
+                if (levels.length > 1) {
+                    qualitySelector.style.display = 'flex';
+
+                    // 添加自动选项
+                    const autoBtn = document.createElement('button');
+                    autoBtn.textContent = getTranslation('auto');
+                    autoBtn.className = 'quality-btn' + (currentLevel === -1 ? ' active' : '');
+                    autoBtn.addEventListener('click', function () {
+                        hls.currentLevel = -1;
+                        setActiveQualityButton(this);
+                    });
+                    qualityButtons.appendChild(autoBtn);
+
+                    // 添加各清晰度选项
+                    levels.forEach((level, index) => {
+                        const btn = document.createElement('button');
+                        const height = level.height || Math.round(level.bitrate / 100000);
+                        btn.textContent = height + 'p';
+                        btn.className = 'quality-btn' + (currentLevel === index ? ' active' : '');
+                        btn.addEventListener('click', function () {
+                            hls.currentLevel = index;
+                            setActiveQualityButton(this);
+                        });
+                        qualityButtons.appendChild(btn);
+                    });
+                } else {
+                    qualitySelector.style.display = 'none';
+                }
             }
-            
-            // 更新页面语言
-            function updatePageLanguage() {
-                document.querySelectorAll('[data-i18n]').forEach(element => {
-                    const key = element.getAttribute('data-i18n');
-                    element.textContent = getTranslation(key);
+
+            // 设置活动的清晰度按钮
+            function setActiveQualityButton(activeBtn) {
+                document.querySelectorAll('.quality-btn').forEach(btn => {
+                    btn.classList.remove('active');
                 });
-                
-                document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
-                    const key = element.getAttribute('data-i18n-placeholder');
-                    element.placeholder = getTranslation(key);
-                });
+                activeBtn.classList.add('active');
             }
-            
+
+            // 更新视频信息
+            function updateVideoInfo() {
+                if (video.videoWidth) {
+                    resolutionEl.textContent = `${video.videoWidth} × ${video.videoHeight}`;
+                }
+
+                if (currentLevel >= 0 && levels[currentLevel]) {
+                    const level = levels[currentLevel];
+                    bitrateEl.textContent = Math.round(level.bitrate / 1000) + ' kbps';
+                    currentLevelEl.textContent = level.height + 'p';
+                } else {
+                    bitrateEl.textContent = '-';
+                    currentLevelEl.textContent = getTranslation('auto');
+                }
+
+                // 计算缓冲长度
+                if (video.buffered.length > 0) {
+                    const bufferEnd = video.buffered.end(video.buffered.length - 1);
+                    const bufferStart = video.buffered.start(0);
+                    const bufferLength = bufferEnd - bufferStart;
+                    bufferLengthEl.textContent = bufferLength.toFixed(1) + 's';
+                } else {
+                    bufferLengthEl.textContent = '0s';
+                }
+            }
+
             // 事件监听器
-            loadBtn.addEventListener('click', function() {
+            loadBtn.addEventListener('click', function () {
                 loadStream(streamUrlInput.value);
             });
-            
+
             // 支持按Enter键加载
-            streamUrlInput.addEventListener('keypress', function(e) {
+            streamUrlInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     loadStream(streamUrlInput.value);
                 }
             });
-            
+
             // 语言切换
-            languageSelector.addEventListener('change', function() {
-                currentLanguage = this.value;
-                localStorage.setItem('language', currentLanguage);
-                updatePageLanguage();
+            languageSelector.addEventListener('change', function () {
+                // 重新创建清晰度按钮以更新文本
+                if (levels.length > 0) {
+                    createQualityButtons();
+                }
             });
         });
     </script>
 </body>
+
 </html>
