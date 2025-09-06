@@ -26,7 +26,7 @@
 **安装与使用**
 1. 下载项目
 ```
-git clone https://github.com/your-username/m3u8-player.git
+git clone https://github.com/FOGBeta/m3u8-player.git
 cd m3u8-player
 ```
 2. 直接使用
@@ -62,7 +62,7 @@ cd m3u8-player
 English (en)
 
 **添加新语言**
-要添加新语言支持，请编辑HTML文件中的resources对象：
+要添加新语言支持，请编辑i18n文件中的resources对象：
 ```
 resources['your-language-code'] = {
     'app-name': 'Your Translation',
@@ -82,10 +82,15 @@ resources['your-language-code'] = {
 ## 📁 项目结构
 ```
 m3u8-player/
-├── index.html          # 主播放器页面
-├── help.html           # 帮助中心页面
-├── README.md           # 项目说明文档
-└── LICENSE             # 开源许可证文件
+├── index.html          # 主页面
+├── help.html           # 帮助页面
+├── 404.html            # 404页面
+├── js/
+│   ├── hls.js          # HLS库文件
+│   ├── hls.worker.js   # HLS库文件
+│   └── i18n.js         # 多语言支持
+├── css/
+│   └── style.css       # 样式文件
 ```
 🔧 自定义配置
 **修改主题颜色**
